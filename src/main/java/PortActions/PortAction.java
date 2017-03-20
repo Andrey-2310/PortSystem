@@ -19,7 +19,7 @@ public class PortAction extends SuperExtd implements PortActionInterface {
         String query = "Select * from ports";
 
         // System.out.println(GetStatement().isClosed())
-        Statement statement = null;
+        Statement statement;
         try {
             statement = GetConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);

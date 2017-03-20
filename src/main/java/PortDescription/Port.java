@@ -39,7 +39,7 @@ public class Port implements Runnable{
             getFromStock=new PriorityBlockingQueue<>();
             this.docks = new Vector<>(3);
             for(int i=0; i<this.docks.capacity(); i++)
-                this.docks.add(new Dock(i, putIntoStock, getFromStock));
+                this.docks.add(new Dock(this.portName, i, putIntoStock, getFromStock));
         });
     }
 

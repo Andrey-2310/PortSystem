@@ -15,13 +15,19 @@ public class Dock {
     Semaphore dockSemaphore;
     Vector<Ship> docShips;
     private int numberOfDock;
-    Dock(int numberOfDock, BlockingQueue<Cargo> putIntoStock, BlockingQueue<Cargo> getFromStock){
+    Dock(String portName, int numberOfDock, BlockingQueue<Cargo> putIntoStock, BlockingQueue<Cargo> getFromStock){
         this.putIntoStock=putIntoStock;
         this.getFromStock=getFromStock;
         dockSemaphore= new Semaphore(1);
         this.numberOfDock=numberOfDock;
         ShipAction shipAction=new ShipAction();
-        docShips=shipAction.GetShipsFromCurrentDock(this.numberOfDock);
+        docShips=shipAction.GetShipsFromCurrentDock(portName, this.numberOfDock);
+        for(Ship ship: docShips) {
+            ship.setGetFromStock(getFromStock);
+            ship.setPutIntoStock(putIntoStock);
+            ship.setDockSemaphore(dockSemaphore);
+            new Thread(ship).start();
+        }
     }
     public void WorkWithDock(){
        /* ships.add(new Ship("Gabella", dockSemaphore));
