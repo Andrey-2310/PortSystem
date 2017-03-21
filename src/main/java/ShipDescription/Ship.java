@@ -94,7 +94,6 @@ class PutIntoShipStream implements Runnable {
 }
 
 class GetFromShipStream implements Runnable {
-
     @Override
     public void run() {
 
