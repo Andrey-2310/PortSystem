@@ -3,6 +3,7 @@ package PortDescription;
 import ShipDescription.*;
 import ShipActions.ShipAction;
 
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -10,31 +11,18 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by Андрей on 16.03.2017.
  */
-public class Dock {
-    private BlockingQueue<Cargo> putIntoStock, getFromStock;
-    Semaphore dockSemaphore;
-    Vector<Ship> docShips;
-    private int numberOfDock;
-    Dock(String portName, int numberOfDock, BlockingQueue<Cargo> putIntoStock, BlockingQueue<Cargo> getFromStock){
-        this.putIntoStock=putIntoStock;
-        this.getFromStock=getFromStock;
-        dockSemaphore= new Semaphore(1);
-        this.numberOfDock=numberOfDock;
-        ShipAction shipAction=new ShipAction();
-        docShips=shipAction.GetShipsFromCurrentDock(portName, this.numberOfDock);
-        for(Ship ship: docShips) {
-            ship.setGetFromStock(getFromStock);
-            ship.setPutIntoStock(putIntoStock);
-            ship.setDockSemaphore(dockSemaphore);
-            new Thread(ship).start();
-        }
-    }
-    public void WorkWithDock(){
-       /* ships.add(new Ship("Gabella", dockSemaphore));
-        ships.add(new Ship("Biba", dockSemaphore));
-        ships.add(new Ship("Dick", dockSemaphore));*/
-        for(Ship ship:docShips)
-            new Thread((ship)).start();
+public class Dock extends Thread {
+
+    ShipDockConnector shipDockConnector;
+
+    public Dock(ShipDockConnector shipDockConnector) {
+        this.shipDockConnector = shipDockConnector;
     }
 
+
+    @Override
+    public void run() {
+        this.shipDockConnector.SetTimeToStay();
+        this.shipDockConnector.SetCargoPriority();
+    }
 }

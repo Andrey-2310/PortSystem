@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 /**
@@ -14,18 +15,20 @@ import java.util.Vector;
  */
 public class ShipAction extends SuperExtd  implements  ShipActionInterface{
     @Override
-    public Vector<Ship> GetShipsFromCurrentDock(String portName, int numberOfDock) {
-        Vector<Ship> ships=new Vector<>();
-        String query = "Select * from ships WHERE dockNum=? and portName=?";
+    public PriorityQueue<Ship> GetShipsFromCurrentPort(String portName) {
+        PriorityQueue<Ship> ships=new PriorityQueue<>();
+        String query = "Select * from ships WHERE portName=?";
         PreparedStatement statement;
         try {
             // System.out.println(GetStatement().isClosed())
             statement = GetConnection().prepareStatement(query);
-            statement.setInt(1, numberOfDock);
-            statement.setString(2, portName);
+            statement.setString(1, portName);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next())
-                ships.add(new Ship(resultSet.getString("shipName")));
+            while(resultSet.next()) {
+                Ship ship=new Ship(resultSet.getString("shipName"));
+                ship.setShipPrioity(resultSet.getInt("shipPriority"));
+                ships.add(ship);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
