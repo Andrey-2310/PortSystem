@@ -52,6 +52,7 @@ ShipDockConnector(){
         available = true;
         notifyAll();
     }
+
     public synchronized void SetCargoPriority() {
         try {
             Thread.sleep(2000);
