@@ -85,7 +85,6 @@ public class Ship extends Thread implements Comparable<Ship> {
 
 class PutIntoShipStream implements Runnable {
     PutIntoShipStream() {
-
     }
 
     @Override
