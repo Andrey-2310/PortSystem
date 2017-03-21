@@ -65,7 +65,6 @@ public class Ship extends Thread implements Comparable<Ship> {
     public void run() {
         try {
             System.out.println("Корабль " + shipName + " Ожидает разрешения");
-
             portSemaphore.acquire();
             System.out.println("Разрешение для корабля " + shipName + " получено");
             shipDockConnector = new ShipDockConnector();
