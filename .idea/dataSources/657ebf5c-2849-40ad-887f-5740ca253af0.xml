@@ -33,53 +33,63 @@
       <DataType>int(10) unsigned|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="14" parent="8" name="ID_UNIQUE">
+    <column id="14" parent="8" name="dock1">
+      <Position>5</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <column id="15" parent="8" name="dock2">
+      <Position>6</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="16" parent="8" name="ID_UNIQUE">
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="15" parent="8" name="PRIMARY">
+    <key id="17" parent="8" name="PRIMARY">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="16" parent="8" name="ID_UNIQUE">
+    <key id="18" parent="8" name="ID_UNIQUE">
       <ColNames>ID</ColNames>
       <UnderlyingIndexName>ID_UNIQUE</UnderlyingIndexName>
     </key>
-    <column id="17" parent="9" name="ID">
+    <column id="19" parent="9" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="18" parent="9" name="shipName">
+    <column id="20" parent="9" name="shipName">
       <Position>2</Position>
       <DataType>varchar(40)|0</DataType>
     </column>
-    <column id="19" parent="9" name="portName">
-      <Position>3</Position>
-      <DataType>varchar(40)|0</DataType>
-    </column>
-    <column id="20" parent="9" name="shipPriority">
+    <column id="21" parent="9" name="shipPriority">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
     </column>
-    <index id="21" parent="9" name="ships_ID_uindex">
+    <column id="22" parent="9" name="portID">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="23" parent="9" name="ships_ID_uindex">
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="22" parent="9" name="ships_shipName_uindex">
+    <index id="24" parent="9" name="ships_shipName_uindex">
       <ColNames>shipName</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="23" parent="9" name="PRIMARY">
+    <key id="25" parent="9" name="PRIMARY">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="24" parent="9" name="ships_ID_uindex">
+    <key id="26" parent="9" name="ships_ID_uindex">
       <ColNames>ID</ColNames>
       <UnderlyingIndexName>ships_ID_uindex</UnderlyingIndexName>
     </key>
-    <key id="25" parent="9" name="ships_shipName_uindex">
+    <key id="27" parent="9" name="ships_shipName_uindex">
       <ColNames>shipName</ColNames>
       <UnderlyingIndexName>ships_shipName_uindex</UnderlyingIndexName>
     </key>

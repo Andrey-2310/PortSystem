@@ -4,6 +4,7 @@ import PortDescription.Port;
 import javafx.geometry.Point2D;
 import sample.SuperExtd;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,7 +17,7 @@ public class PortAction extends SuperExtd implements PortActionInterface {
     @Override
     public Vector<Port> GenerateAllPorts() {
         Vector<Port> ports = new Vector<>();
-        String query = "Select * from ports";
+        String query = "SELECT * FROM ports";
 
         // System.out.println(GetStatement().isClosed())
         Statement statement;
@@ -46,8 +47,10 @@ public class PortAction extends SuperExtd implements PortActionInterface {
 
     @Override
     public void StartAllPortThreads(Vector<Thread> portThreads) {
-        for(Thread portThread: portThreads)
+        for (Thread portThread : portThreads)
             portThread.start();
     }
+
+
 
 }

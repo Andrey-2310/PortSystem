@@ -1,4 +1,4 @@
-package Scenes;
+package Scenes.Map;
 
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;

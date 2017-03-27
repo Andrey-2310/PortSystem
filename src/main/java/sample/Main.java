@@ -1,13 +1,10 @@
 package sample;
 
 import PortActions.PortAction;
-import PortDescription.Dock;
 import PortDescription.Port;
-import Scenes.MapWindow;
+import Scenes.CreateCargoListWindow;
+import Scenes.Map.MapWindow;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Vector;
@@ -21,8 +18,8 @@ public class Main extends Application {
         PortAction portAction = new PortAction();
         Vector<Port> ports = portAction.GenerateAllPorts();
        /* portAction.StartAllPortThreads(portAction.ConstuctAllPortThreads(ports));*/
-
-        new MapWindow(primaryStage, ports);
+        new CreateCargoListWindow(primaryStage);
+       // new MapWindow(primaryStage, ports);
         primaryStage.show();
     }
 

@@ -4,10 +4,9 @@ import ShipActions.ShipAction;
 import ShipDescription.Cargo;
 import ShipDescription.Ship;
 import javafx.geometry.Point2D;
-import Scenes.MapPoint;
+import Scenes.Map.MapPoint;
 import javafx.scene.image.Image;
 
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
@@ -45,17 +44,16 @@ public class Port implements Runnable {
             //Инициализация порта как логической единицы
             putIntoStockQuque = new PriorityBlockingQueue<>();
             getFromStockQuque = new PriorityBlockingQueue<>();
-            portSemaphore = new Semaphore(3);
-
+            portSemaphore = new Semaphore(2);
             ShipAction shipAction = new ShipAction();
             shipsQuque = shipAction.GetShipsFromCurrentPort(this.portName);
             for (Ship ship : shipsQuque) {
                 ship.setGetFromStock(getFromStockQuque);
                 ship.setPutIntoStock(putIntoStockQuque);
                 ship.setDockSemaphore(portSemaphore);
+                ship.SetShipAction(shipAction);
                 ship.start();
             }
-
         });
     }
 

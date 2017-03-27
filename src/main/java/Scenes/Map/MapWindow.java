@@ -1,4 +1,4 @@
-package Scenes;
+package Scenes.Map;
 
 import PortDescription.Port;
 import javafx.scene.Scene;
@@ -16,7 +16,7 @@ import java.util.Vector;
  */
 public class MapWindow {
     public MapWindow(Stage mapStage, Vector<Port> ports){
-        mapStage.setTitle("Hello World");
+        mapStage.setTitle("Port Dispatching System");
         BorderPane borderPane=new BorderPane();
         MenuBar menu=new MenuBar();
         menu.setMinHeight(30);

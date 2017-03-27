@@ -9,9 +9,11 @@ public class ShipDockConnector {
     private int timeToStay;
     private int cargoPriority;
     private boolean available;
-ShipDockConnector(){
-    this.available = false;
-}
+
+    ShipDockConnector() {
+        this.available = false;
+    }
+
     public synchronized int GetTimeToStay() {
         while (available == false) {
             try {
@@ -44,26 +46,23 @@ ShipDockConnector(){
             }
         } catch (InterruptedException e) {
         }
-        Scanner in=new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         System.out.println("Введите время для остановки");
-        timeToStay =in.nextInt();
-        System.out.println("Введите приоритет груза");
-
+        timeToStay = in.nextInt();
         available = true;
         notifyAll();
     }
 
     public synchronized void SetCargoPriority() {
         try {
-            Thread.sleep(2000);
             while (available == true) {
                 wait();
             }
         } catch (InterruptedException e) {
         }
-        Scanner in=new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         System.out.println("Введите приоритет груза");
-        cargoPriority =in.nextInt();
+        cargoPriority = in.nextInt();
         available = true;
         notifyAll();
     }
