@@ -1,4 +1,4 @@
-package ShipActions;
+package ShipDescription.ShipActions;
 
 import ShipDescription.Ship;
 import sample.SuperExtd;

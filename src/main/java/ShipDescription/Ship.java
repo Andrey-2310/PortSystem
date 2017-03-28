@@ -1,11 +1,9 @@
 package ShipDescription;
 
-import PortActions.PortAction;
+import CargoDescription.Cargo;
 import PortDescription.Dock;
-import PortDescription.Port;
-import ShipActions.ShipAction;
+import ShipDescription.ShipActions.ShipAction;
 
-import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 

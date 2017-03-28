@@ -1,6 +1,9 @@
 package Scenes;
 
+import CargoDescription.Cargo;
+import CargoDescription.CargoAction.CargoAction;
 import PortDescription.Port;
+import ShipDescription.ShipActions.ShipAction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -41,21 +44,25 @@ public class CreateCargoListWindow {
         for (Label label : cargoTypesRow2) {
             label.setStyle("-fx-text-fill: brown; -fx-font-size: 15px; -font-width: Bold;");
         }
+
         ObservableList<String> destinationList = FXCollections.observableArrayList(
                 "Huoston", "Rotterdam", "Shanhai", "Dubai", "Richards Bay", "San Luis", "Port Hedland");
         ComboBox destinationBox = new ComboBox(destinationList);
         gridPane.add(destinationBox, 1, 0);
+
         Label priority = new Label("Priority");
         priority.setStyle("-fx-text-fill: darkgreen; -fx-font-size: 15px; -font-width: Bold;");
         gridPane.add(priority, 2, 0);
+
         Label destination = new Label("Destination");
         destination.setStyle("-fx-text-fill: darkgreen; -fx-font-size: 15px; -font-width: Bold;");
         gridPane.add(destination, 0, 0);
-        ObservableList<String> priorityList = FXCollections.observableArrayList(
-                "High", "Medium", "Low");
+
+        ObservableList<String> priorityList = FXCollections.observableArrayList("3", "2", "1");
         ComboBox priorityBox = new ComboBox(priorityList);
         priorityBox.setMinWidth(120);
         gridPane.add(priorityBox, 3, 0);
+
         Label instructionLabel = new Label("Instruction");
         instructionLabel.setStyle("-fx-text-fill: gold; -fx-font-size: 15px; -font-width: Bold;");
         gridPane.add(instructionLabel, 2, 3);
@@ -68,8 +75,8 @@ public class CreateCargoListWindow {
                 gridPane.add(textFields[i], 3, i - 2);
             textFields[i].setMaxWidth(120);
         }
-        for(TextField textField: textFields)
-            textField.setOnMousePressed(event-> textField.clear());
+        for (TextField textField : textFields)
+            textField.setOnMousePressed(event -> textField.clear());
 
         //gridPane.add(textFields[5], 3, 1);
         for (int i = 0; i < 3; i++)
@@ -89,22 +96,24 @@ public class CreateCargoListWindow {
         next.setOnMouseClicked(event -> {
 
             boolean incorrectFields = false;
-            try{
-                if(destinationBox.getSelectionModel().getSelectedItem().toString().equals(Port.getPortName())){
+            try {
+                if (destinationBox.getSelectionModel().getSelectedItem().toString().equals(Port.getPortName())) {
                     System.out.println("Пункт назначения совпадает с данным портом");
                     incorrectFields = true;
                 }
 
-            }catch (NullPointerException npe){
+            } catch (NullPointerException npe) {
                 System.out.println("Выберите пункт назначения");
-                incorrectFields = true;}
+                incorrectFields = true;
+            }
 
             if (!incorrectFields)
-                try{
-                priorityBox.getSelectionModel().getSelectedItem().toString();
-            }catch (NullPointerException npe){
-                System.out.println("Выберите приоритет груза");
-                incorrectFields = true;}
+                try {
+                    priorityBox.getSelectionModel().getSelectedItem().toString();
+                } catch (NullPointerException npe) {
+                    System.out.println("Выберите приоритет груза");
+                    incorrectFields = true;
+                }
 
             if (!incorrectFields)
                 for (int i = 0; i < 5; i++) {
@@ -118,27 +127,35 @@ public class CreateCargoListWindow {
                         incorrectFields = true;
                         break;
                     }
-                    if(Integer.parseInt(textFields[i].getText())<0){
-                        System.out.println("Количество груза в поле "+ i +"меньше нуля");
+                    if (Integer.parseInt(textFields[i].getText()) < 0) {
+                        System.out.println("Количество груза в поле " + i + "меньше нуля");
                         incorrectFields = true;
                         break;
                     }
-                    if(Integer.parseInt(textFields[i].getText())>100){
-                        System.out.println("Количество груза в поле "+ i +"больше допустимой нормы в 100 контейнеров");
+                    if (Integer.parseInt(textFields[i].getText()) > 100) {
+                        System.out.println("Количество груза в поле " + i + "больше допустимой нормы в 100 контейнеров");
                         incorrectFields = true;
                         break;
                     }
                 }
 
-            if (!incorrectFields)
-                if (amountOfCargos > 1)
-                    new CreateCargoListWindow(cargoListStage, amountOfCargos - 1);
-                else System.out.println("horosh");
+            if (!incorrectFields) {
 
+                CargoAction cargoAction = new CargoAction();
+                cargoAction.InsertCargo(new Cargo(Port.getPortName(),
+                        destinationBox.getSelectionModel().getSelectedItem().toString(),
+                        Integer.parseInt(priorityBox.getSelectionModel().getSelectedItem().toString()),
+                        Integer.parseInt(textFields[0].getText()), Integer.parseInt(textFields[3].getText()),
+                        Integer.parseInt(textFields[1].getText()), Integer.parseInt(textFields[4].getText()),
+                        Integer.parseInt(textFields[2].getText()), textFields[5].getText()));
+                if (amountOfCargos > 1) {
+                    new CreateCargoListWindow(cargoListStage, amountOfCargos - 1);
+                } else System.out.println("horosh");
+            }
         });
-        auto.setOnMousePressed(event ->{
-            Random random=new Random();
-            for(int i=0; i<5; i++)
+        auto.setOnMousePressed(event -> {
+            Random random = new Random();
+            for (int i = 0; i < 5; i++)
                 textFields[i].setText(String.valueOf(random.nextInt(101)));
         });
         Scene cargoListScene = new Scene(borderPane, 600, 350);

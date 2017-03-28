@@ -1,8 +1,8 @@
 package PortDescription;
 
 import Scenes.CreateCargoListWindow;
-import ShipActions.ShipAction;
-import ShipDescription.Cargo;
+import ShipDescription.ShipActions.ShipAction;
+import CargoDescription.Cargo;
 import ShipDescription.Ship;
 import javafx.geometry.Point2D;
 import Scenes.Map.MapPoint;
@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import java.util.Queue;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.Semaphore;
 
 /**
