@@ -1,6 +1,7 @@
 package PortActions;
 
 import PortDescription.Port;
+import javafx.stage.Stage;
 
 import java.util.Vector;
 
@@ -8,7 +9,7 @@ import java.util.Vector;
  * Created by Андрей on 19.03.2017.
  */
 public interface PortActionInterface{
-    Vector<Port> GenerateAllPorts();
+    Vector<Port> GenerateAllPorts( Stage primaryStage);
     Vector<Thread> ConstuctAllPortThreads(Vector<Port> ports);
     void StartAllPortThreads(Vector<Thread> portThreads);
 }

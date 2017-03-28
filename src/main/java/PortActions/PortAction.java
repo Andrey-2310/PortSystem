@@ -2,6 +2,7 @@ package PortActions;
 
 import PortDescription.Port;
 import javafx.geometry.Point2D;
+import javafx.stage.Stage;
 import sample.SuperExtd;
 
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.Vector;
  */
 public class PortAction extends SuperExtd implements PortActionInterface {
     @Override
-    public Vector<Port> GenerateAllPorts() {
+    public Vector<Port> GenerateAllPorts(Stage primaryStage) {
         Vector<Port> ports = new Vector<>();
         String query = "SELECT * FROM ports";
 
@@ -26,7 +27,7 @@ public class PortAction extends SuperExtd implements PortActionInterface {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 ports.addElement(new Port(resultSet.getString("portname"),
-                        new Point2D(resultSet.getInt("portX"), resultSet.getInt("portY"))));
+                        new Point2D(resultSet.getInt("portX"), resultSet.getInt("portY")), primaryStage));
             }
         } catch (SQLException e) {
             e.printStackTrace();

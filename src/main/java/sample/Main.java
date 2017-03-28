@@ -16,10 +16,10 @@ public class Main extends Application {
 
         primaryStage.setTitle("Hello World");
         PortAction portAction = new PortAction();
-        Vector<Port> ports = portAction.GenerateAllPorts();
+        Vector<Port> ports = portAction.GenerateAllPorts(primaryStage);
        /* portAction.StartAllPortThreads(portAction.ConstuctAllPortThreads(ports));*/
-        new CreateCargoListWindow(primaryStage);
-       // new MapWindow(primaryStage, ports);
+        //new CreateCargoListWindow(primaryStage);
+        new MapWindow(primaryStage, ports);
         primaryStage.show();
     }
 
