@@ -22,7 +22,7 @@ import java.util.Random;
  * Created by Андрей on 23.03.2017.
  */
 public class CreateCargoListWindow {
-    public CreateCargoListWindow(Stage cargoListStage, int amountOfCargos) {
+    public CreateCargoListWindow(Stage cargoListStage, int amountOfCargos, Port port) {
         System.out.println(amountOfCargos);
         BorderPane borderPane = new BorderPane();
         GridPane gridPane = new GridPane();
@@ -38,8 +38,8 @@ public class CreateCargoListWindow {
         gridPane.setPadding(new Insets(0, 10, 0, 70));
         Label[] cargoTypesRow0 = new Label[]{new Label("Ordinary"), new Label("Poisonous"), new Label("Flammable")};
         Label[] cargoTypesRow2 = new Label[]{new Label("Explosive"), new Label("Sensitive")};
-        for (int i = 0; i < 3; i++) {
-            cargoTypesRow0[i].setStyle("-fx-text-fill: brown; -fx-font-size: 15px; -font-width: Bold;");
+        for (Label label: cargoTypesRow0) {
+            label.setStyle("-fx-text-fill: brown; -fx-font-size: 15px; -font-width: Bold;");
         }
         for (Label label : cargoTypesRow2) {
             label.setStyle("-fx-text-fill: brown; -fx-font-size: 15px; -font-width: Bold;");
@@ -149,8 +149,12 @@ public class CreateCargoListWindow {
                         Integer.parseInt(textFields[1].getText()), Integer.parseInt(textFields[4].getText()),
                         Integer.parseInt(textFields[2].getText()), textFields[5].getText()));
                 if (amountOfCargos > 1) {
-                    new CreateCargoListWindow(cargoListStage, amountOfCargos - 1);
-                } else System.out.println("horosh");
+                    new CreateCargoListWindow(cargoListStage, amountOfCargos - 1, port);
+                } else{
+                   // new PortWindow(cargoListStage);
+                    Thread portThread=new Thread(port);
+                    portThread.start();
+                }
             }
         });
         auto.setOnMousePressed(event -> {

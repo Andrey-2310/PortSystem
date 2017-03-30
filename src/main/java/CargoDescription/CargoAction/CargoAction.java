@@ -4,7 +4,9 @@ import CargoDescription.Cargo;
 import sample.SuperExtd;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by Андрей on 28.03.2017.
@@ -30,5 +32,19 @@ public class CargoAction extends SuperExtd implements CargoActionInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean CheckAnyCargo() {
+        String query="SELECT  * from cargo";
+        try {
+            Statement statement=GetConnection().createStatement();
+
+            ResultSet resultSet=  statement.executeQuery(query);
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

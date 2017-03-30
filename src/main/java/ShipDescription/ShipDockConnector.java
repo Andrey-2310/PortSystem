@@ -10,7 +10,7 @@ public class ShipDockConnector {
     private int cargoPriority;
     private boolean available;
 
-    ShipDockConnector() {
+    public ShipDockConnector() {
         this.available = false;
     }
 

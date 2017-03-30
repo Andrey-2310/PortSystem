@@ -7,4 +7,5 @@ import CargoDescription.Cargo;
  */
 public interface CargoActionInterface {
     void InsertCargo(Cargo cargo);
+    boolean CheckAnyCargo();
 }

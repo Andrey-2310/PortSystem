@@ -7,12 +7,17 @@ import ShipDescription.*;
  */
 public class Dock extends Thread {
 
+
     ShipDockConnector shipDockConnector;
 
     public Dock(ShipDockConnector shipDockConnector) {
         this.shipDockConnector = shipDockConnector;
     }
 
+
+    public void setShipDockConnector(ShipDockConnector shipDockConnector) {
+        this.shipDockConnector = shipDockConnector;
+    }
 
     @Override
     public void run() {

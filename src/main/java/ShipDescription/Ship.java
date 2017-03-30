@@ -2,6 +2,7 @@ package ShipDescription;
 
 import CargoDescription.Cargo;
 import PortDescription.Dock;
+import Scenes.PortWindow;
 import ShipDescription.ShipActions.ShipAction;
 
 import java.util.concurrent.BlockingQueue;
@@ -10,7 +11,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by Андрей on 16.03.2017.
  */
-public class Ship extends Thread implements Comparable<Ship> {
+public class Ship implements Comparable<Ship>, Runnable {
 
 
     private String shipName;
@@ -26,9 +27,16 @@ public class Ship extends Thread implements Comparable<Ship> {
     private ShipAction shipAction;
 
 
+    private PortWindow portWindow;
+
+
     public Ship(String shipName) {
         this.shipName = shipName;
         System.out.println("Найден корабль " + shipName);
+    }
+
+    public void setPortWindow(PortWindow portWindow) {
+        this.portWindow = portWindow;
     }
 
     public void SetShipAction(ShipAction shipAction) {
@@ -78,7 +86,8 @@ public class Ship extends Thread implements Comparable<Ship> {
             System.out.println("Корабль едет в " + numberOfDock + " порт");
 
             shipDockConnector = new ShipDockConnector();
-            currentDock = new Dock(shipDockConnector);
+            currentDock =  portWindow.GetDockByNumber(numberOfDock);
+            currentDock.setShipDockConnector(shipDockConnector);
             currentDock.start();
             System.out.println("Время стоянки в порту: " + shipDockConnector.GetTimeToStay());
             System.out.println("Приоритет груза: " + shipDockConnector.GetCargoPriority());
