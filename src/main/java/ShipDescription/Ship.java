@@ -4,6 +4,7 @@ import CargoDescription.Cargo;
 import PortDescription.Dock;
 import Scenes.PortWindow;
 import ShipDescription.ShipActions.ShipAction;
+import org.apache.log4j.Logger;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -13,7 +14,7 @@ import java.util.concurrent.Semaphore;
  */
 public class Ship implements Comparable<Ship>, Runnable {
 
-
+    private static final Logger log = Logger.getLogger(Ship.class);
     private String shipName;
     private int shipPrioity;
     private int numberOfDock;
@@ -25,8 +26,6 @@ public class Ship implements Comparable<Ship>, Runnable {
     private GetFromShipStream getFromShipStream;
     private PutIntoShipStream putIntoShipStream;
     private ShipAction shipAction;
-
-
     private PortWindow portWindow;
 
 
@@ -77,23 +76,25 @@ public class Ship implements Comparable<Ship>, Runnable {
     @Override
     public void run() {
         try {
-            System.out.println("Корабль " + shipName + " Ожидает разрешения");
+            Thread shipThread=new Thread(this);
+            log.info("Корабль " + shipName + " Ожидает разрешения");
             portSemaphore.acquire();
-            System.out.println("Разрешение для корабля " + shipName + " получено");
+            log.info("Разрешение для корабля " + shipName + " получено");
+
 
             numberOfDock = shipAction.WhatDockIsEmpty(shipName) + 1;
             shipAction.FulFillDoc(numberOfDock);
-            System.out.println("Корабль едет в " + numberOfDock + " порт");
-
-            shipDockConnector = new ShipDockConnector();
+            log.info("Корабль" +shipName +" едет в " + numberOfDock + " док");
+            Thread.currentThread().sleep(3000);
+         /*   shipDockConnector = new ShipDockConnector(portWindow);
             currentDock =  portWindow.GetDockByNumber(numberOfDock);
             currentDock.setShipDockConnector(shipDockConnector);
             currentDock.start();
-            System.out.println("Время стоянки в порту: " + shipDockConnector.GetTimeToStay());
-            System.out.println("Приоритет груза: " + shipDockConnector.GetCargoPriority());
-            currentDock.join();
+            log.info("Время стоянки в порту: " + shipDockConnector.GetTimeToStay());
+            log.info("Приоритет груза: " + shipDockConnector.GetCargoPriority());
+            currentDock.join();*/
 
-            System.out.println("Корабль " + shipName + " покидает порт");
+            log.info("Корабль " + shipName + " покидает порт");
             shipAction.ReleaseDock(numberOfDock);
             portSemaphore.release();
         } catch (InterruptedException e) {

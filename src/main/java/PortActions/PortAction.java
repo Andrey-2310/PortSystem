@@ -4,8 +4,6 @@ import PortDescription.Port;
 import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 import sample.SuperExtd;
-
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,7 +25,7 @@ public class PortAction extends SuperExtd implements PortActionInterface {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 ports.addElement(new Port(resultSet.getString("portname"),
-                        new Point2D(resultSet.getInt("portX"), resultSet.getInt("portY")), primaryStage));
+                        new Point2D(resultSet.getInt("portX"), resultSet.getInt("portY"))));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,22 +34,6 @@ public class PortAction extends SuperExtd implements PortActionInterface {
 
         return ports;
     }
-
-    @Override
-    public Vector<Thread> ConstuctAllPortThreads(Vector<Port> ports) {
-        Vector<Thread> portThreads = new Vector<>();
-        for (Port port : ports) {
-            portThreads.add(new Thread(port));
-        }
-        return portThreads;
-    }
-
-    @Override
-    public void StartAllPortThreads(Vector<Thread> portThreads) {
-        for (Thread portThread : portThreads)
-            portThread.start();
-    }
-
 
 
 }

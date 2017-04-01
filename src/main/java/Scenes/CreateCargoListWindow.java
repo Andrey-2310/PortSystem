@@ -93,19 +93,19 @@ public class CreateCargoListWindow {
             next.setText("Complete");
         next.setMinWidth(120);
         gridPane.add(next, 1, 4);
-        next.setOnMouseClicked(event -> {
+        next.setOnMouseClicked((MouseEvent event) -> {
 
             boolean incorrectFields = false;
-            try {
-                if (destinationBox.getSelectionModel().getSelectedItem().toString().equals(Port.getPortName())) {
-                    System.out.println("Пункт назначения совпадает с данным портом");
-                    incorrectFields = true;
-                }
-
-            } catch (NullPointerException npe) {
-                System.out.println("Выберите пункт назначения");
-                incorrectFields = true;
-            }
+//            try {
+//                if (destinationBox.getSelectionModel().getSelectedItem().toString().equals(Port.getPortName())) {
+//                    System.out.println("Пункт назначения совпадает с данным портом");
+//                    incorrectFields = true;
+//                }
+//
+//            } catch (NullPointerException npe) {
+//                System.out.println("Выберите пункт назначения");
+//                incorrectFields = true;
+//            }
 
             if (!incorrectFields)
                 try {
@@ -141,16 +141,17 @@ public class CreateCargoListWindow {
 
             if (!incorrectFields) {
 
-                CargoAction cargoAction = new CargoAction();
+             /*   CargoAction cargoAction = new CargoAction();
                 cargoAction.InsertCargo(new Cargo(Port.getPortName(),
                         destinationBox.getSelectionModel().getSelectedItem().toString(),
                         Integer.parseInt(priorityBox.getSelectionModel().getSelectedItem().toString()),
                         Integer.parseInt(textFields[0].getText()), Integer.parseInt(textFields[3].getText()),
                         Integer.parseInt(textFields[1].getText()), Integer.parseInt(textFields[4].getText()),
-                        Integer.parseInt(textFields[2].getText()), textFields[5].getText()));
+                        Integer.parseInt(textFields[2].getText()), textFields[5].getText()));*/
                 if (amountOfCargos > 1) {
                     new CreateCargoListWindow(cargoListStage, amountOfCargos - 1, port);
                 } else{
+                    port.getPortWindow().CreatePortWindow();
                    // new PortWindow(cargoListStage);
                     Thread portThread=new Thread(port);
                     portThread.start();
@@ -162,7 +163,6 @@ public class CreateCargoListWindow {
             for (int i = 0; i < 5; i++)
                 textFields[i].setText(String.valueOf(random.nextInt(101)));
         });
-        Scene cargoListScene = new Scene(borderPane, 600, 350);
-        cargoListStage.setScene(cargoListScene);
+        cargoListStage.setScene(new Scene(borderPane, 600, 350));
     }
 }

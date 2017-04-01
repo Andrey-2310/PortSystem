@@ -10,6 +10,4 @@ import java.util.Vector;
  */
 public interface PortActionInterface{
     Vector<Port> GenerateAllPorts( Stage primaryStage);
-    Vector<Thread> ConstuctAllPortThreads(Vector<Port> ports);
-    void StartAllPortThreads(Vector<Thread> portThreads);
 }
