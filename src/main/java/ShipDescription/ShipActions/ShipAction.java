@@ -7,15 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by Андрей on 20.03.2017.
  */
 public class ShipAction extends SuperExtd implements ShipActionInterface {
     @Override
-    public PriorityQueue<Ship> GetShipsFromCurrentPort(String portName) {
-        PriorityQueue<Ship> ships = new PriorityQueue<>();
+    public PriorityBlockingQueue<Ship> GetShipsFromCurrentPort(String portName) {
+        PriorityBlockingQueue<Ship> ships = new PriorityBlockingQueue<>();
         String query1 = "SELECT ID FROM ports WHERE portName=?";
         String query2 = "SELECT * FROM ships WHERE portID=?";
         PreparedStatement statement1;
@@ -30,7 +30,7 @@ public class ShipAction extends SuperExtd implements ShipActionInterface {
             ResultSet resultSet = statement2.executeQuery();
             while (resultSet.next()) {
                 Ship ship = new Ship(resultSet.getString("shipName"));
-                ship.setShipPrioity(resultSet.getInt("shipPriority"));
+                ship.setPriority(resultSet.getInt("shipPriority"));
                 ships.add(ship);
             }
         } catch (SQLException e) {

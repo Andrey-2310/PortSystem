@@ -1,16 +1,15 @@
 package Scenes;
 
-import CargoDescription.Cargo;
-import CargoDescription.CargoAction.CargoAction;
 import PortDescription.Port;
-import ShipDescription.ShipActions.ShipAction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -151,10 +150,8 @@ public class CreateCargoListWindow {
                 if (amountOfCargos > 1) {
                     new CreateCargoListWindow(cargoListStage, amountOfCargos - 1, port);
                 } else{
-                    port.getPortWindow().CreatePortWindow();
                    // new PortWindow(cargoListStage);
-                    Thread portThread=new Thread(port);
-                    portThread.start();
+
                 }
             }
         });

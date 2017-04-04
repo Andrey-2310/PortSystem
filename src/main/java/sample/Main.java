@@ -1,14 +1,8 @@
 package sample;
 
-import PortActions.PortAction;
-import PortDescription.Port;
-import Scenes.CreateCargoListWindow;
 import Scenes.Map.MapWindow;
-import Scenes.PortWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.util.Vector;
 
 public class Main extends Application {
 

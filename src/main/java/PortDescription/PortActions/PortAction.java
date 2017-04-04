@@ -1,4 +1,4 @@
-package PortActions;
+package PortDescription.PortActions;
 
 import PortDescription.Port;
 import javafx.geometry.Point2D;
@@ -33,6 +33,18 @@ public class PortAction extends SuperExtd implements PortActionInterface {
         // Timestamp sqlTimestamp = new Timestamp(System.currentTimeMillis());
 
         return ports;
+    }
+
+    @Override
+    public void ClearAllPorts() {
+        String query="UPDATE  ports set dock1=0 and dock2=0;";
+        Statement statement;
+        try {
+            statement = GetConnection().createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

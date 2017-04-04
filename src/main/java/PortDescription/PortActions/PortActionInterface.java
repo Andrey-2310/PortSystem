@@ -1,4 +1,4 @@
-package PortActions;
+package PortDescription.PortActions;
 
 import PortDescription.Port;
 import javafx.stage.Stage;
@@ -10,4 +10,5 @@ import java.util.Vector;
  */
 public interface PortActionInterface{
     Vector<Port> GenerateAllPorts( Stage primaryStage);
+    void ClearAllPorts();
 }

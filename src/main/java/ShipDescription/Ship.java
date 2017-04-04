@@ -1,121 +1,111 @@
 package ShipDescription;
 
 import CargoDescription.Cargo;
+import CargoDescription.CargoAction.CargoAction;
 import PortDescription.Dock;
-import Scenes.PortWindow;
+import PortDescription.Port;
+import Scenes.Map.MapWindow;
 import ShipDescription.ShipActions.ShipAction;
 import org.apache.log4j.Logger;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.Semaphore;
 
 /**
  * Created by Андрей on 16.03.2017.
  */
-public class Ship implements Comparable<Ship>, Runnable {
+public class Ship extends Thread implements Comparable<Ship> {
 
     private static final Logger log = Logger.getLogger(Ship.class);
     private String shipName;
-    private int shipPrioity;
+  //  private int shipPriority;
     private int numberOfDock;
-    private BlockingQueue<Cargo> putIntoStock, getFromStock;
+    private PriorityBlockingQueue<Cargo> putIntoStockQuque, getFromStockQuque;
     private Dock currentDock;
+    private Port port;
     private Semaphore portSemaphore;
     private Cargo cargo;
     private ShipDockConnector shipDockConnector;
-    private GetFromShipStream getFromShipStream;
-    private PutIntoShipStream putIntoShipStream;
-    private ShipAction shipAction;
-    private PortWindow portWindow;
 
 
     public Ship(String shipName) {
         this.shipName = shipName;
         System.out.println("Найден корабль " + shipName);
+        CargoAction action = new CargoAction();
+        this.cargo = action.GetCargoOfShip(shipName);
     }
 
-    public void setPortWindow(PortWindow portWindow) {
-        this.portWindow = portWindow;
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 
-    public void SetShipAction(ShipAction shipAction) {
-        this.shipAction = shipAction;
+    public void setPort(Port port) {
+        this.port = port;
     }
 
     public void setDockSemaphore(Semaphore portSemaphore) {
         this.portSemaphore = portSemaphore;
     }
 
-    public GetFromShipStream getGetFromShipStream() {
-        return getFromShipStream;
+  /*  public void setShipPrioity(int shipPrioity) {
+        this.shipPriority = shipPrioity;
+    }*/
+
+    public void setPutIntoStock(PriorityBlockingQueue<Cargo> putIntoStockQuque) {
+        this.putIntoStockQuque = putIntoStockQuque;
     }
 
-    public PutIntoShipStream getPutIntoShipStream() {
-        return putIntoShipStream;
-    }
-
-    public void setShipPrioity(int shipPrioity) {
-        this.shipPrioity = shipPrioity;
-    }
-
-    public void setPutIntoStock(BlockingQueue<Cargo> putIntoStock) {
-        this.putIntoStock = putIntoStock;
-    }
-
-    public void setGetFromStock(BlockingQueue<Cargo> getFromStock) {
-        this.getFromStock = getFromStock;
+    public void setGetFromStock(PriorityBlockingQueue<Cargo> getFromStockQuque) {
+        this.getFromStockQuque = getFromStockQuque;
     }
 
     @Override
     public int compareTo(Ship ship) {
-        if (this.shipPrioity > ship.shipPrioity) return -1;
-        if (this.shipPrioity < ship.shipPrioity) return 1;
+        if (this.getPriority() > ship.getPriority()) return -1;
+        if (this.getPriority() < ship.getPriority()) return 1;
         return 0;
     }
 
     @Override
     public void run() {
         try {
-            Thread shipThread=new Thread(this);
             log.info("Корабль " + shipName + " Ожидает разрешения");
-            portSemaphore.acquire();
-            log.info("Разрешение для корабля " + shipName + " получено");
+            while (true) {
+                portSemaphore = port.getPortSemaphore();
+                portSemaphore.acquire();
+                log.info("Разрешение для корабля " + shipName + " получено");
 
+                ShipAction shipAction = new ShipAction();
+                numberOfDock = shipAction.WhatDockIsEmpty(shipName) + 1;
+                shipAction.FulFillDoc(numberOfDock);
+                log.info("Корабль" + shipName + " едет в " + numberOfDock + " док");
 
-            numberOfDock = shipAction.WhatDockIsEmpty(shipName) + 1;
-            shipAction.FulFillDoc(numberOfDock);
-            log.info("Корабль" +shipName +" едет в " + numberOfDock + " док");
-            Thread.currentThread().sleep(3000);
-         /*   shipDockConnector = new ShipDockConnector(portWindow);
-            currentDock =  portWindow.GetDockByNumber(numberOfDock);
-            currentDock.setShipDockConnector(shipDockConnector);
-            currentDock.start();
-            log.info("Время стоянки в порту: " + shipDockConnector.GetTimeToStay());
-            log.info("Приоритет груза: " + shipDockConnector.GetCargoPriority());
-            currentDock.join();*/
+                putIntoStockQuque = port.getPutIntoStockQuque();
+                getFromStockQuque = port.getGetFromStockQuque();
 
-            log.info("Корабль " + shipName + " покидает порт");
-            shipAction.ReleaseDock(numberOfDock);
-            portSemaphore.release();
+                putIntoStockQuque.offer(cargo);
+                System.out.println(cargo.toString());
+               // Thread.currentThread().sleep(2000);
+                do {
+                    cargo = getFromStockQuque.poll();
+                }while(cargo==null);
+                System.out.println(cargo.toString());
+
+                log.info("Корабль " + shipName + " покидает порт");
+                shipAction.ReleaseDock(numberOfDock);
+                portSemaphore.release();
+
+                port = MapWindow.ChooseNextPort(port.getPortName());
+                log.info("Корабль " + shipName + " направляется в порт " + port.getPortName());
+                port.getShipsQuque().add(this);
+               /* while (true) {
+                    if (!port.getShipsQuque().contains(this)) break;
+                }*/
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-}
-
-class PutIntoShipStream implements Runnable {
-    PutIntoShipStream() {
-    }
-
-    @Override
-    public void run() {
 
     }
 }
 
-class GetFromShipStream implements Runnable {
-    @Override
-    public void run() {
-
-    }
-}

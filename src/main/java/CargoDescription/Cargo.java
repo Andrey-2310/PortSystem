@@ -6,16 +6,13 @@ package CargoDescription;
 public class Cargo implements Comparable<Cargo> {
 
     private int priority;
-
+    private int shipID;
     private int sensetive;
     private int ordinary;
     private int poisonous;
     private int explosive;
     private int flammable;
 
-    private String destination;
-    private String instruction;
-    private String current;
 
     public int getSensetive() {return sensetive;}
 
@@ -27,37 +24,43 @@ public class Cargo implements Comparable<Cargo> {
 
     public int getFlammable() {return flammable;}
 
-    public String getDestination() {return destination;}
+    public int getShipID() {return shipID;}
 
-    public String getInstruction() {return instruction;}
-
-    public String getCurrent() {return current;}
-
-    public Cargo(String current, String destination, int priority, int ordinary, int explosive,
-                 int poisonous, int sensetive, int flammable, String instruction) {
+    public Cargo(int priority,int shipID,  int ordinary, int explosive, int poisonous, int sensetive, int flammable) {
         this.priority = priority;
         this.sensetive = sensetive;
         this.ordinary = ordinary;
         this.poisonous = poisonous;
         this.explosive = explosive;
         this.flammable = flammable;
-        this.destination = destination;
-        this.instruction = instruction;
-        this.current=current;
-
+        this.shipID=shipID;
     }
 
     public int getPriority() {
         return priority;
     }
 
-    Cargo(int priority){
-        this.priority=priority;
+    Cargo(int priority) {
+        this.priority = priority;
     }
+
     @Override
     public int compareTo(Cargo anotherCargo) {
-        if(this.priority>anotherCargo.getPriority()) return -1;
-        if(this.priority<anotherCargo.getPriority()) return 1;
+        if (this.priority > anotherCargo.getPriority()) return -1;
+        if (this.priority < anotherCargo.getPriority()) return 1;
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Cargo{" +
+                "priority=" + priority +
+                ", shipID=" + shipID +
+                ", sensetive=" + sensetive +
+                ", ordinary=" + ordinary +
+                ", poisonous=" + poisonous +
+                ", explosive=" + explosive +
+                ", flammable=" + flammable +
+                '}';
     }
 }
