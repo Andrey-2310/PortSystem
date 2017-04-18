@@ -1,27 +1,28 @@
 package Scenes.Map;
 
-import com.mysql.cj.api.x.Table;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 
 /**
  * Created by Андрей on 18.03.2017.
  */
 public class MapPoint {
+    /**Point of Port on Map*/
     private ImageView point;
+    /**Label with the name of Port on Map*/
     private Label pointName;
-
+/**TableView with description of Port on Map*/
     private TableView portTable;
 
+    /**
+     * Constructor of MapPoint
+     */
     public MapPoint() {
         point = new ImageView(new Image("маячок.png"));
         point.setFitWidth(30);
@@ -44,22 +45,35 @@ public class MapPoint {
 
     }
 
+    /**@return 2D Point- coordinates */
     public ImageView getPoint() {
         return point;
     }
 
+    /**@return Label*/
     public Label getPointName() {
         return pointName;
     }
 
+    /**@return TableView*/
     public TableView getPortTable() {
         return portTable;
     }
 
+    /**
+     * Inner class DataModel
+     * Describes Model of constructing TableView with description of Port
+     */
    public static class DataModel {
         SimpleStringProperty attribute;
         SimpleIntegerProperty amount;
 
+        /**
+         * Description of Data Model
+         * Getters and Setters are needed to PropertyValueFactory
+         * @param attribute - attribute string
+         * @param amount- amount INteger
+         */
         public DataModel(String attribute, int amount) {
             this.attribute = new SimpleStringProperty(attribute);
             this.amount = new SimpleIntegerProperty(amount);

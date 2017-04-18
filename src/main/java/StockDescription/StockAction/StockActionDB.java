@@ -6,21 +6,26 @@ import sample.SuperExtd;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 
 /**
  * Created by Андрей on 01.04.2017.
  */
-public class StockActionDB  extends SuperExtd implements StockActionInterface {
-    @Override
-    public Stock GetStockState( String portName) {
+public class StockActionDB  extends SuperExtd  {
+    /**
+     * Gets current Stock state
+     * @param portName
+     * @return Stock - current Stock state
+     */
+    public static Stock GetStockState( String portName) {
         String query1="SELECT ID from portdispatchsystem.ports WHERE portName=?";
         String query2="Select * from portdispatchsystem.stock where portID=?";
         try {
             PreparedStatement preparedStatement1 = GetConnection().prepareStatement(query1);
+            if(portName==null) return null;
             preparedStatement1.setString(1, portName);
             ResultSet resultSet1=preparedStatement1.executeQuery();
-            resultSet1.next();
+
+            if(!resultSet1.next()) return null;
             PreparedStatement preparedStatement2=GetConnection().prepareStatement(query2);
             preparedStatement2.setInt(1, resultSet1.getInt(1));
             ResultSet resultSet2=preparedStatement2.executeQuery();

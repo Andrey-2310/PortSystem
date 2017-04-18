@@ -6,48 +6,20 @@ import sample.SuperExtd;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Random;
 
 /**
  * Created by Андрей on 28.03.2017.
  */
-public class CargoAction extends SuperExtd implements CargoActionInterface {
+public class CargoAction extends SuperExtd  {
 
-    @Override
-    public void InsertCargo(Cargo cargo) {
-        String query = "INSERT INTO cargo (priority, shipID, ordinary, explosive, " +
-                "poisonous, sensetive, flammable, instruction) VALUES (?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement preparedStatement = GetConnection().prepareStatement(query);
-            preparedStatement.setInt(1, cargo.getPriority());
-            preparedStatement.setInt(2, cargo.getShipID());
-            preparedStatement.setInt(3, cargo.getOrdinary());
-            preparedStatement.setInt(4, cargo.getExplosive());
-            preparedStatement.setInt(5, cargo.getPoisonous());
-            preparedStatement.setInt(6, cargo.getSensetive());
-            preparedStatement.setInt(7, cargo.getFlammable());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    /**
+     This method gets start cargo of the ship by it's name from DB
+     * @param shipName
+     * @return Cargo of the ship
+     */
 
-    @Override
-    public boolean CheckAnyCargo() {
-        String query = "SELECT  * FROM cargo";
-        try {
-            Statement statement = GetConnection().createStatement();
-
-            ResultSet resultSet = statement.executeQuery(query);
-            return resultSet.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public Cargo GetCargoOfShip(String shipName) {
+    public  static Cargo GetCargoOfShip(String shipName) {
         String query1 = "SELECT ID FROM ships WHERE shipName=?;";
         String query2 = "SELECT * FROM cargo WHERE shipID=?;";
         try {
@@ -69,5 +41,13 @@ public class CargoAction extends SuperExtd implements CargoActionInterface {
         return null;
     }
 
-
+    /**
+     * Generates random Cargo
+     * @return Cargo
+     */
+    public static Cargo GenerateCargo(){
+        Random random=new Random();
+        return new Cargo(random.nextInt(100)+1, 0,  random.nextInt(101),
+                random.nextInt(101),  random.nextInt(101),  random.nextInt(101),  random.nextInt(101));
+    }
 }

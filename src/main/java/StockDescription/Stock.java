@@ -9,14 +9,25 @@ import java.util.concurrent.PriorityBlockingQueue;
  * Created by Андрей on 19.03.2017.
  */
 public class Stock {
+    /**Characteristics of Stock */
     private volatile int sensetive;
     private volatile int ordinary;
     private volatile int poisonous;
     private volatile int explosive;
     private volatile int flammable;
+    /**Threads to get and put Cargos to Stock*/
     private Thread putIntoStockThread, getFromStockThread;
+    /**Queues to get and put Cargos to Stock*/
     private PriorityBlockingQueue<Cargo> putIntoStockQuque, getFromStockQuque;
 
+    /**
+     * Creating Stock object
+     * @param ordinary
+     * @param explosive
+     * @param poisonous
+     * @param sensetive
+     * @param flammable
+     */
     public Stock(int ordinary, int explosive, int poisonous, int sensetive, int flammable) {
         this.sensetive = sensetive;
         this.ordinary = ordinary;
@@ -34,6 +45,11 @@ public class Stock {
                     this.addPoisonous(cargo.getPoisonous());
                     this.addSensetive(cargo.getSensetive());
                 }
+                else try {
+                    Thread.currentThread().sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         getFromStockThread = new Thread(() -> {
@@ -50,7 +66,7 @@ public class Stock {
                     this.subPoisonous(cargo.getPoisonous());
                     this.subSensetive(cargo.getSensetive());
                     try {
-                        Thread.currentThread().sleep(5000);
+                        Thread.currentThread().sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -58,23 +74,24 @@ public class Stock {
             }
         });
     }
-
+    /**Getter for putIntoStockThread*/
     public Thread getPutIntoStockThread() {
         return putIntoStockThread;
     }
-
+    /**Getter for getFromStockThread*/
     public Thread getGetFromStockThread() {
         return getFromStockThread;
     }
-
+    /**Getter for putIntoStockQuque*/
     public void setPutIntoStockQuque(PriorityBlockingQueue<Cargo> putIntoStockQuque) {
         this.putIntoStockQuque = putIntoStockQuque;
     }
-
+    /**Getter for getFromStockQuque*/
     public void setGetFromStockQuque(PriorityBlockingQueue<Cargo> getFromStockQuque) {
         this.getFromStockQuque = getFromStockQuque;
     }
 
+    /**Getters for Stock params*/
     public synchronized int getSensetive() {
         return sensetive;
     }
@@ -97,7 +114,7 @@ public class Stock {
 
 
 
-
+/**Operations adding and substructing with Stock params*/
     public synchronized void subSensetive(int sensetive) {
         while (true)
             if (this.sensetive - sensetive < 0) try {

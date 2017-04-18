@@ -1,13 +1,12 @@
 package sample;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Created by Андрей on 28.02.2017.
@@ -28,7 +27,7 @@ public class SuperExtd {
      * This method gets connection of the DB
      * @return Connection
      */
-    protected Connection GetConnection() {
+    public static Connection GetConnection() {
         try {
             Driver myDriver = new com.mysql.cj.jdbc.Driver();
             DriverManager.registerDriver(myDriver);

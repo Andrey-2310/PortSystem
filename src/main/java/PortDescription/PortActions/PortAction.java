@@ -2,19 +2,26 @@ package PortDescription.PortActions;
 
 import PortDescription.Port;
 import javafx.geometry.Point2D;
-import javafx.stage.Stage;
 import sample.SuperExtd;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 import java.util.Vector;
 
 /**
  * Created by Андрей on 19.03.2017.
  */
-public class PortAction extends SuperExtd implements PortActionInterface {
-    @Override
-    public Vector<Port> GenerateAllPorts(Stage primaryStage) {
+
+
+/**This class operates with DB to organize PortActions*/
+public class PortAction extends SuperExtd  {
+    /**
+     *This method generates all Port objects
+     * @return all Port objects
+     */
+    public static void GenerateAllPorts() {
         Vector<Port> ports = new Vector<>();
         String query = "SELECT * FROM ports";
 
@@ -30,13 +37,14 @@ public class PortAction extends SuperExtd implements PortActionInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // Timestamp sqlTimestamp = new Timestamp(System.currentTimeMillis());
 
-        return ports;
+
+        Port.setPorts(ports);
     }
-
-    @Override
-    public void ClearAllPorts() {
+    /**
+     * This method clears all docks of the port in DB
+     */
+    public static void ClearAllPorts() {
         String query="UPDATE  ports set dock1=0 and dock2=0;";
         Statement statement;
         try {
@@ -47,5 +55,18 @@ public class PortAction extends SuperExtd implements PortActionInterface {
         }
     }
 
+    /**
+     * This method randomly chooses next Port Ship will go
+     * @param portName - name of current port
+     * @return
+     */
+    public static Port ChooseNextPort(String portName) {
+        Random random = new Random();
+        Port nextPort;
+        do {
+            nextPort = Port.getPorts().get(random.nextInt(Port.getPorts().size()));
+        } while (nextPort.getPortName().equals(portName));
+        return nextPort;
+    }
 
 }

@@ -3,6 +3,8 @@ package ShipDescription.ShipActions;
 import ShipDescription.Ship;
 import sample.SuperExtd;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +14,14 @@ import java.util.concurrent.PriorityBlockingQueue;
 /**
  * Created by Андрей on 20.03.2017.
  */
-public class ShipAction extends SuperExtd implements ShipActionInterface {
-    @Override
-    public PriorityBlockingQueue<Ship> GetShipsFromCurrentPort(String portName) {
+public class ShipAction extends SuperExtd {
+
+    /**
+     * Gets Ships From Current Port
+     * @param portName- name of current Port
+     * @return  PriorityBlockingQueue of Ships
+     */
+    public static PriorityBlockingQueue<Ship> GetShipsFromCurrentPort(String portName) {
         PriorityBlockingQueue<Ship> ships = new PriorityBlockingQueue<>();
         String query1 = "SELECT ID FROM ports WHERE portName=?";
         String query2 = "SELECT * FROM ships WHERE portID=?";
@@ -39,8 +46,13 @@ public class ShipAction extends SuperExtd implements ShipActionInterface {
         return ships;
     }
 
-    @Override
-    public synchronized int WhatDockIsEmpty(String shipName) {
+    /**
+     * Checks what dock in Port is empty
+     * @param shipName name of ship
+     * @return number of empty dock
+     */
+    public static  int WhatDockIsEmpty(String shipName) {
+
         String query1 = "SELECT portID FROM ships WHERE shipName=?;";
         String query2 = "SELECT dock1 FROM ports WHERE ID=?;";
         try {
@@ -55,13 +67,17 @@ public class ShipAction extends SuperExtd implements ShipActionInterface {
             resultSet2.next();
             return resultSet2.getInt("dock1");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Доки заняты");
         }
+
         return 0;
     }
 
-    @Override
-    public synchronized void FulFillDoc(int numberOfDock) {
+    /**
+     * Fulfilling dock
+     * @param numberOfDock - number of free dock
+     */
+    public static void FulFillDoc(int numberOfDock) {
         try {
             if (numberOfDock == 1) {
                 String query = "UPDATE  ports SET dock1=1;";
@@ -78,8 +94,11 @@ public class ShipAction extends SuperExtd implements ShipActionInterface {
         }
     }
 
-    @Override
-    public void ReleaseDock(int numberOfDock) {
+    /**
+     * Release dock by it's number
+     * @param numberOfDock - number Of Dock
+     */
+    public static void ReleaseDock(int numberOfDock) {
         try {
             if (numberOfDock == 1) {
                 String query = "UPDATE  ports SET dock1=0;";
@@ -93,6 +112,19 @@ public class ShipAction extends SuperExtd implements ShipActionInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Adding Ship Into BlackList
+     * @param time - elapsed time
+     * @param shipName - name of Ship
+     */
+    public static synchronized void AddShipIntoBlackList(long time, String shipName) {
+        try (FileWriter out = new FileWriter("Blacklist", true)) {
+            out.write(shipName + " " + time + "\n");
+        } catch (IOException e) {
+            System.out.println("IOException");
         }
     }
 }
